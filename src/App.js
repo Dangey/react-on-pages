@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
-import { HashRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 
 const Home = () => <div><h2>Home</h2></div>
@@ -15,8 +15,10 @@ class App extends Component {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
           </ul>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
         </div>
       </Router>
     );
