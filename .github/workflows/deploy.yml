@@ -7,14 +7,36 @@ on:
 
 jobs:
   build-deploy:
+  
     runs-on: ubuntu-latest
-    env:
-      USER: Dangey
-      EMAIL: 32312177+Dangey@users.noreply.github.com
+    
+    strategy:
+      matrix:
+        node-version: [16.x]
+        
     steps:
-      - uses: actions/checkout@v3
-      - run: |
-          git config --global user.name ${{ env.USER }}
-          git config --global user.email ${{ env.EMAIL }}
-      - run: npm ci
-      - run: npm run deploy
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+        
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Deploy
+        run: |
+          git config --global user.name $user_name
+          git config --global user.email $user_email
+          git remote set-url origin https://${github_token}@github.com/${repository}
+          npm run deploy
+        env:
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
