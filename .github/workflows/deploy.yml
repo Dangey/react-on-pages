@@ -8,14 +8,13 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      USER: Dangey
+      EMAIL: 32312177+Dangey@users.noreply.github.com
     steps:
       - uses: actions/checkout@v3
       - run: |
           git config --global user.name ${{ env.USER }}
           git config --global user.email ${{ env.EMAIL }}
-        env:
-          USER: Dangey
-          EMAIL: 32312177+Dangey@users.noreply.github.com
       - run: npm ci
       - run: npm run deploy
-      
